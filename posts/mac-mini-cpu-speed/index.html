@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/fonts.css">
+    
+    <title>Michael Madden</title>
+    <link rel="icon" type="image/png" href="/assets/img/favicon.ico" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+        integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <script src="/js/dark.js" defer=""></script>
+
+</head>
+
+
+<html>
+<!DOCTYPE html>
+<html>
+
+<body>
+  <header class="site-header">
+
+    <div class="wrapper">
+      <a class="muted small" href="https://mikemadden42.github.io/">Michael Madden</a>
+    </div>
+  </header>
+</body>
+
+</html>
+
+<h1>Mac Mini CPU Speed</h1>
+<p class="post-meta"><time itemprop="datePublished">September 27, 2021</time>
+</p>
+<p>I&rsquo;m very impressed with the speed of the 2020 M1 Mac Mini</p>
+<p>I first tested the CPU speed with <code>7z b</code> from <a href="https://github.com/jinfeihan57/p7zip">p7zip</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ 7z b
+
+7-Zip <span style="color:#f92672">[</span>64<span style="color:#f92672">]</span> 17.04 : Copyright <span style="color:#f92672">(</span>c<span style="color:#f92672">)</span> 1999-2021 Igor Pavlov : 2017-08-28
+p7zip Version 17.04 <span style="color:#f92672">(</span>locale<span style="color:#f92672">=</span>utf8,Utf16<span style="color:#f92672">=</span>on,HugeFiles<span style="color:#f92672">=</span>on,64 bits,8 CPUs LE<span style="color:#f92672">)</span>
+
+LE
+CPU Freq:  <span style="color:#ae81ff">2249</span>  <span style="color:#ae81ff">2398</span>  <span style="color:#ae81ff">2230</span>  <span style="color:#ae81ff">3030</span>  <span style="color:#ae81ff">3200</span>  <span style="color:#ae81ff">3199</span>  <span style="color:#ae81ff">3201</span>  <span style="color:#ae81ff">3199</span>  <span style="color:#ae81ff">3198</span>
+
+RAM size:   <span style="color:#ae81ff">16384</span> MB,  <span style="color:#75715e"># CPU hardware threads:   8</span>
+RAM usage:   <span style="color:#ae81ff">1765</span> MB,  <span style="color:#75715e"># Benchmark threads:      8</span>
+
+                       Compressing  |                  Decompressing
+Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
+         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
+
+22:      <span style="color:#ae81ff">40736</span>   <span style="color:#ae81ff">727</span>   <span style="color:#ae81ff">5454</span>  <span style="color:#ae81ff">39628</span>  |     <span style="color:#ae81ff">346914</span>   <span style="color:#ae81ff">794</span>   <span style="color:#ae81ff">3726</span>  <span style="color:#ae81ff">29590</span>
+23:      <span style="color:#ae81ff">39706</span>   <span style="color:#ae81ff">761</span>   <span style="color:#ae81ff">5320</span>  <span style="color:#ae81ff">40457</span>  |     <span style="color:#ae81ff">341347</span>   <span style="color:#ae81ff">793</span>   <span style="color:#ae81ff">3724</span>  <span style="color:#ae81ff">29539</span>
+24:      <span style="color:#ae81ff">38128</span>   <span style="color:#ae81ff">765</span>   <span style="color:#ae81ff">5358</span>  <span style="color:#ae81ff">40996</span>  |     <span style="color:#ae81ff">334291</span>   <span style="color:#ae81ff">790</span>   <span style="color:#ae81ff">3716</span>  <span style="color:#ae81ff">29340</span>
+25:      <span style="color:#ae81ff">37176</span>   <span style="color:#ae81ff">768</span>   <span style="color:#ae81ff">5524</span>  <span style="color:#ae81ff">42447</span>  |     <span style="color:#ae81ff">328274</span>   <span style="color:#ae81ff">789</span>   <span style="color:#ae81ff">3702</span>  <span style="color:#ae81ff">29215</span>
+----------------------------------  | ------------------------------
+Avr:             <span style="color:#ae81ff">755</span>   <span style="color:#ae81ff">5414</span>  <span style="color:#ae81ff">40882</span>  |              <span style="color:#ae81ff">792</span>   <span style="color:#ae81ff">3717</span>  <span style="color:#ae81ff">29421</span>
+Tot:             <span style="color:#ae81ff">773</span>   <span style="color:#ae81ff">4565</span>  <span style="color:#ae81ff">35151</span>
+</code></pre></div><p>The benchmark numbers for compressing/decompressing are almost twice as fast as my 2015 MacBook Pro.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ 7z b
+
+7-Zip <span style="color:#f92672">[</span>64<span style="color:#f92672">]</span> 17.04 : Copyright <span style="color:#f92672">(</span>c<span style="color:#f92672">)</span> 1999-2021 Igor Pavlov : 2017-08-28
+p7zip Version 17.04 <span style="color:#f92672">(</span>locale<span style="color:#f92672">=</span>utf8,Utf16<span style="color:#f92672">=</span>on,HugeFiles<span style="color:#f92672">=</span>on,64 bits,8 CPUs x64<span style="color:#f92672">)</span>
+
+x64
+CPU Freq:  <span style="color:#ae81ff">3399</span>  <span style="color:#ae81ff">3440</span>  <span style="color:#ae81ff">3436</span>  <span style="color:#ae81ff">3478</span>  <span style="color:#ae81ff">3507</span>  <span style="color:#ae81ff">3518</span>  <span style="color:#ae81ff">3499</span>  <span style="color:#ae81ff">3477</span>  <span style="color:#ae81ff">3512</span>
+
+RAM size:   <span style="color:#ae81ff">16384</span> MB,  <span style="color:#75715e"># CPU hardware threads:   8</span>
+RAM usage:   <span style="color:#ae81ff">1765</span> MB,  <span style="color:#75715e"># Benchmark threads:      8</span>
+
+                       Compressing  |                  Decompressing
+Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
+         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
+
+22:      <span style="color:#ae81ff">20600</span>   <span style="color:#ae81ff">610</span>   <span style="color:#ae81ff">3284</span>  <span style="color:#ae81ff">20040</span>  |     <span style="color:#ae81ff">227353</span>   <span style="color:#ae81ff">768</span>   <span style="color:#ae81ff">2525</span>  <span style="color:#ae81ff">19392</span>
+23:      <span style="color:#ae81ff">19232</span>   <span style="color:#ae81ff">636</span>   <span style="color:#ae81ff">3080</span>  <span style="color:#ae81ff">19595</span>  |     <span style="color:#ae81ff">212406</span>   <span style="color:#ae81ff">767</span>   <span style="color:#ae81ff">2397</span>  <span style="color:#ae81ff">18381</span>
+24:      <span style="color:#ae81ff">16681</span>   <span style="color:#ae81ff">639</span>   <span style="color:#ae81ff">2806</span>  <span style="color:#ae81ff">17936</span>  |     <span style="color:#ae81ff">193246</span>   <span style="color:#ae81ff">748</span>   <span style="color:#ae81ff">2267</span>  <span style="color:#ae81ff">16961</span>
+25:      <span style="color:#ae81ff">15412</span>   <span style="color:#ae81ff">647</span>   <span style="color:#ae81ff">2721</span>  <span style="color:#ae81ff">17597</span>  |     <span style="color:#ae81ff">193028</span>   <span style="color:#ae81ff">769</span>   <span style="color:#ae81ff">2235</span>  <span style="color:#ae81ff">17179</span>
+----------------------------------  | ------------------------------
+Avr:             <span style="color:#ae81ff">633</span>   <span style="color:#ae81ff">2973</span>  <span style="color:#ae81ff">18792</span>  |              <span style="color:#ae81ff">763</span>   <span style="color:#ae81ff">2356</span>  <span style="color:#ae81ff">17978</span>
+Tot:             <span style="color:#ae81ff">698</span>   <span style="color:#ae81ff">2664</span>  <span style="color:#ae81ff">18385</span>
+</code></pre></div>
+
+<footer>
+    <div>
+        <h3><a href="https://mikemadden42.github.io/posts">Back to all posts</a></h3>
+    </div>
+    <hr>
+    <p>Go <a href="https://mikemadden42.github.io//index.xml">here</a> for an RSS feed.</p>
+</footer>
+
+</html>
