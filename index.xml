@@ -6,7 +6,17 @@
     <description>Recent content on Michael Madden&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 27 Sep 2021 20:28:40 -0500</lastBuildDate><atom:link href="https://mikemadden42.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 12 Oct 2021 19:09:12 -0500</lastBuildDate><atom:link href="https://mikemadden42.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mac Mini OpenSSL Speed</title>
+      <link>https://mikemadden42.github.io/posts/mac-mini-openssl-speed/</link>
+      <pubDate>Tue, 12 Oct 2021 19:09:12 -0500</pubDate>
+      
+      <guid>https://mikemadden42.github.io/posts/mac-mini-openssl-speed/</guid>
+      <description>The benchmarks for openssl on the 2020 Mac Mini are impressive.
+$ openssl speed rc4 Doing rc4 for 3s on 16 size blocks: 196567633 rc4&amp;#39;s in 3.01s Doing rc4 for 3s on 64 size blocks: 59755274 rc4&amp;#39;s in 3.01s Doing rc4 for 3s on 256 size blocks: 15735364 rc4&amp;#39;s in 3.01s Doing rc4 for 3s on 1024 size blocks: 3968584 rc4&amp;#39;s in 3.00s Doing rc4 for 3s on 8192 size blocks: 500071 rc4&amp;#39;s in 3.</description>
+    </item>
+    
     <item>
       <title>Mac Mini CPU Speed</title>
       <link>https://mikemadden42.github.io/posts/mac-mini-cpu-speed/</link>

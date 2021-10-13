@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/fonts.css">
+    
+    <title>Michael Madden</title>
+    <link rel="icon" type="image/png" href="/assets/img/favicon.ico" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+        integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <script src="/js/dark.js" defer=""></script>
+
+</head>
+
+
+<html>
+<!DOCTYPE html>
+<html>
+
+<body>
+  <header class="site-header">
+
+    <div class="wrapper">
+      <a class="muted small" href="https://mikemadden42.github.io/">Michael Madden</a>
+    </div>
+  </header>
+</body>
+
+</html>
+
+<h1>Mac Mini OpenSSL Speed</h1>
+<p class="post-meta"><time itemprop="datePublished">October 12, 2021</time>
+</p>
+<p>The benchmarks for <code>openssl</code> on the 2020 Mac Mini are impressive.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ openssl speed rc4
+Doing rc4 <span style="color:#66d9ef">for</span> 3s on <span style="color:#ae81ff">16</span> size blocks: <span style="color:#ae81ff">196567633</span> rc4<span style="color:#e6db74">&#39;s in 3.01s
+</span><span style="color:#e6db74">Doing rc4 for 3s on 64 size blocks: 59755274 rc4&#39;</span>s in 3.01s
+Doing rc4 <span style="color:#66d9ef">for</span> 3s on <span style="color:#ae81ff">256</span> size blocks: <span style="color:#ae81ff">15735364</span> rc4<span style="color:#e6db74">&#39;s in 3.01s
+</span><span style="color:#e6db74">Doing rc4 for 3s on 1024 size blocks: 3968584 rc4&#39;</span>s in 3.00s
+Doing rc4 <span style="color:#66d9ef">for</span> 3s on <span style="color:#ae81ff">8192</span> size blocks: <span style="color:#ae81ff">500071</span> rc4<span style="color:#e6db74">&#39;s in 3.01s
+</span><span style="color:#e6db74">LibreSSL 2.8.3
+</span><span style="color:#e6db74">built on: date not available
+</span><span style="color:#e6db74">options:bn(64,64) rc4(ptr,int) des(idx,cisc,16,int) aes(partial) blowfish(idx)
+</span><span style="color:#e6db74">compiler: information not available
+</span><span style="color:#e6db74">The &#39;</span>numbers<span style="color:#960050;background-color:#1e0010">&#39;</span> are in 1000s of bytes per second processed.
+type             <span style="color:#ae81ff">16</span> bytes     <span style="color:#ae81ff">64</span> bytes    <span style="color:#ae81ff">256</span> bytes   <span style="color:#ae81ff">1024</span> bytes   <span style="color:#ae81ff">8192</span> bytes
+rc4            1046010.67k  1271776.09k  1339563.79k  1354086.88k  1362324.84
+</code></pre></div><p>Like the <code>7z</code> benchmark, the 2020 Mac Mini is close to twice as fast as my 2015 MacBook Pro.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ openssl speed rc4
+Doing rc4 <span style="color:#66d9ef">for</span> 3s on <span style="color:#ae81ff">16</span> size blocks: <span style="color:#ae81ff">88227131</span> rc4<span style="color:#e6db74">&#39;s in 2.99s
+</span><span style="color:#e6db74">Doing rc4 for 3s on 64 size blocks: 34107361 rc4&#39;</span>s in 2.99s
+Doing rc4 <span style="color:#66d9ef">for</span> 3s on <span style="color:#ae81ff">256</span> size blocks: <span style="color:#ae81ff">9773938</span> rc4<span style="color:#e6db74">&#39;s in 2.99s
+</span><span style="color:#e6db74">Doing rc4 for 3s on 1024 size blocks: 2462731 rc4&#39;</span>s in 2.99s
+Doing rc4 <span style="color:#66d9ef">for</span> 3s on <span style="color:#ae81ff">8192</span> size blocks: <span style="color:#ae81ff">322263</span> rc4<span style="color:#e6db74">&#39;s in 2.99s
+</span><span style="color:#e6db74">LibreSSL 2.8.3
+</span><span style="color:#e6db74">built on: date not available
+</span><span style="color:#e6db74">options:bn(64,64) rc4(16x,int) des(idx,cisc,16,int) aes(partial) blowfish(idx)
+</span><span style="color:#e6db74">compiler: information not available
+</span><span style="color:#e6db74">The &#39;</span>numbers<span style="color:#960050;background-color:#1e0010">&#39;</span> are in 1000s of bytes per second processed.
+type             <span style="color:#ae81ff">16</span> bytes     <span style="color:#ae81ff">64</span> bytes    <span style="color:#ae81ff">256</span> bytes   <span style="color:#ae81ff">1024</span> bytes   <span style="color:#ae81ff">8192</span> bytes
+rc4             471408.32k   729853.89k   837518.97k   843304.57k   883784.56k
+</code></pre></div>
+
+<footer>
+    <div>
+        <h3><a href="https://mikemadden42.github.io/posts">Back to all posts</a></h3>
+    </div>
+    <hr>
+    <p>Go <a href="https://mikemadden42.github.io//index.xml">here</a> for an RSS feed.</p>
+</footer>
+
+</html>
