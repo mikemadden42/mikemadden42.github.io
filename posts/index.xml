@@ -6,8 +6,59 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Thu, 14 Oct 2021 07:26:50 -0500</lastBuildDate>
+        <lastBuildDate>Sat, 16 Oct 2021 14:36:11 -0500</lastBuildDate>
         <atom:link href="https://mikemadden42.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>macOS System Information</title>
+            <link>https://mikemadden42.github.io/posts/macos-system-information/</link>
+            <pubDate>Sat, 16 Oct 2021 14:36:11 -0500</pubDate>
+            
+            <guid>https://mikemadden42.github.io/posts/macos-system-information/</guid>
+            <description>There are many useful command line utilities to get the system information on a macOS system.
+$ arch arm64 $ hostinfo Mach kernel version: Darwin Kernel Version 20.6.0: Mon Aug 30 06:12:20 PDT 2021; root:xnu-7195.141.6~3/RELEASE_ARM64_T8101 Kernel configured for up to 8 processors. 8 processors are physically available. 8 processors are logically available. Processor type: arm64e (ARM64E) Processors active: 0 1 2 3 4 5 6 7 Primary memory available: 16.00 gigabytes Default processor set: 417 tasks, 1561 threads, 8 processors Load average: 10.</description>
+            <content type="html"><![CDATA[<p>There are many useful command line utilities to get the system information on a macOS system.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ arch
+arm64
+
+$ hostinfo
+Mach kernel version:
+         Darwin Kernel Version 20.6.0: Mon Aug <span style="color:#ae81ff">30</span> 06:12:20 PDT 2021; root:xnu-7195.141.6~3/RELEASE_ARM64_T8101
+Kernel configured <span style="color:#66d9ef">for</span> up to <span style="color:#ae81ff">8</span> processors.
+<span style="color:#ae81ff">8</span> processors are physically available.
+<span style="color:#ae81ff">8</span> processors are logically available.
+Processor type: arm64e <span style="color:#f92672">(</span>ARM64E<span style="color:#f92672">)</span>
+Processors active: <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">5</span> <span style="color:#ae81ff">6</span> <span style="color:#ae81ff">7</span>
+Primary memory available: 16.00 gigabytes
+Default processor set: <span style="color:#ae81ff">417</span> tasks, <span style="color:#ae81ff">1561</span> threads, <span style="color:#ae81ff">8</span> processors
+Load average: 10.61, Mach factor: 0.66
+
+$ sw_vers
+ProductName:    macOS
+ProductVersion: 11.6
+BuildVersion:   20G165
+
+$ system_profiler SPHardwareDataType
+Hardware:
+
+    Hardware Overview:
+
+      Model Name: Mac mini
+      Model Identifier: Macmini9,1
+      Chip: Apple M1
+      Total Number of Cores: <span style="color:#ae81ff">8</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">4</span> performance and <span style="color:#ae81ff">4</span> efficiency<span style="color:#f92672">)</span>
+      Memory: <span style="color:#ae81ff">16</span> GB
+      System Firmware Version: 6723.140.2
+      OS Loader Version: 6723.140.2
+      Serial Number <span style="color:#f92672">(</span>system<span style="color:#f92672">)</span>: XXXXXXXXXXXX
+      Hardware UUID: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+      Provisioning UDID: XXXXXXXX-XXXXXXXXXXXXXXXX
+      Activation Lock Status: Disabled
+
+$ uname -a
+Darwin 49097.local 20.6.0 Darwin Kernel Version 20.6.0: Mon Aug <span style="color:#ae81ff">30</span> 06:12:20 PDT 2021; root:xnu-7195.141.6~3/RELEASE_ARM64_T8101 arm64
+</code></pre></div>]]></content>
+        </item>
         
         <item>
             <title>Apple Event - 10/18</title>

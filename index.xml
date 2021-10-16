@@ -7,7 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Thu, 14 Oct 2021 07:26:50 -0500</lastBuildDate><atom:link href="https://mikemadden42.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 16 Oct 2021 14:36:11 -0500</lastBuildDate><atom:link href="https://mikemadden42.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>macOS System Information</title>
+      <link>https://mikemadden42.github.io/posts/macos-system-information/</link>
+      <pubDate>Sat, 16 Oct 2021 14:36:11 -0500</pubDate>
+      
+      <guid>https://mikemadden42.github.io/posts/macos-system-information/</guid>
+      <description>There are many useful command line utilities to get the system information on a macOS system.
+$ arch arm64 $ hostinfo Mach kernel version: Darwin Kernel Version 20.6.0: Mon Aug 30 06:12:20 PDT 2021; root:xnu-7195.141.6~3/RELEASE_ARM64_T8101 Kernel configured for up to 8 processors. 8 processors are physically available. 8 processors are logically available. Processor type: arm64e (ARM64E) Processors active: 0 1 2 3 4 5 6 7 Primary memory available: 16.00 gigabytes Default processor set: 417 tasks, 1561 threads, 8 processors Load average: 10.</description>
+    </item>
+    
     <item>
       <title>Apple Event - 10/18</title>
       <link>https://mikemadden42.github.io/posts/apple-event-10-18/</link>
