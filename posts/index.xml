@@ -6,8 +6,22 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Sat, 16 Oct 2021 14:36:11 -0500</lastBuildDate>
+        <lastBuildDate>Fri, 29 Oct 2021 21:32:10 -0500</lastBuildDate>
         <atom:link href="https://mikemadden42.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>macOS Restart ssh</title>
+            <link>https://mikemadden42.github.io/posts/macos-restart-ssh/</link>
+            <pubDate>Fri, 29 Oct 2021 21:32:10 -0500</pubDate>
+            
+            <guid>https://mikemadden42.github.io/posts/macos-restart-ssh/</guid>
+            <description>If you ever run into a situation when you can VNC into your Mac, but ssh isn&amp;rsquo;t working you may try the following. This has happened to me a couple times with my Mac Mini.
+$ sudo launchctl unload /System/Library/LaunchDaemons/ssh.plist $ sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist </description>
+            <content type="html"><![CDATA[<p>If you ever run into a situation when you can VNC into your Mac, but ssh isn&rsquo;t working you may try the following.  This has happened to me a couple times with my Mac Mini.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo launchctl unload /System/Library/LaunchDaemons/ssh.plist
+$ sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
+</code></pre></div>]]></content>
+        </item>
         
         <item>
             <title>macOS System Information</title>
