@@ -6,8 +6,155 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Fri, 29 Oct 2021 21:32:10 -0500</lastBuildDate>
+        <lastBuildDate>Sat, 18 Dec 2021 13:45:11 -0600</lastBuildDate>
         <atom:link href="https://mikemadden42.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>More macOS System Information</title>
+            <link>https://mikemadden42.github.io/posts/more-macos-system-information/</link>
+            <pubDate>Sat, 18 Dec 2021 13:45:11 -0600</pubDate>
+            
+            <guid>https://mikemadden42.github.io/posts/more-macos-system-information/</guid>
+            <description>Here are a few more utilities to find system information on macOS.
+$ uptime 11:48 up 3:01, 3 users, load averages: 1.09 0.97 0.93 $ diskutil list /dev/disk0 (internal): #: TYPE NAME SIZE IDENTIFIER 0: GUID_partition_scheme 251.0 GB disk0 1: Apple_APFS_ISC 524.3 MB disk0s1 2: Apple_APFS Container disk3 245.1 GB disk0s2 3: Apple_APFS_Recovery 5.4 GB disk0s3 /dev/disk3 (synthesized): #: TYPE NAME SIZE IDENTIFIER 0: APFS Container Scheme - +245.1 GB disk3 Physical Store disk0s2 1: APFS Volume Macintosh HD 15.</description>
+            <content type="html"><![CDATA[<p>Here are a few more utilities to find system information on macOS.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ uptime
+11:48  up  3:01, <span style="color:#ae81ff">3</span> users, load averages: 1.09 0.97 0.93
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ diskutil list
+/dev/disk0 <span style="color:#f92672">(</span>internal<span style="color:#f92672">)</span>:
+   <span style="color:#75715e">#:                       TYPE NAME                    SIZE       IDENTIFIER</span>
+   0:      GUID_partition_scheme                         251.0 GB   disk0
+   1:             Apple_APFS_ISC                         524.3 MB   disk0s1
+   2:                 Apple_APFS Container disk3         245.1 GB   disk0s2
+   3:        Apple_APFS_Recovery                         5.4 GB     disk0s3
+
+/dev/disk3 <span style="color:#f92672">(</span>synthesized<span style="color:#f92672">)</span>:
+   <span style="color:#75715e">#:                       TYPE NAME                    SIZE       IDENTIFIER</span>
+   0:      APFS Container Scheme -                      +245.1 GB   disk3
+                                 Physical Store disk0s2
+   1:                APFS Volume Macintosh HD            15.8 GB    disk3s1
+   2:              APFS Snapshot com.apple.os.update-... 15.8 GB    disk3s1s1
+   3:                APFS Volume Preboot                 460.9 MB   disk3s2
+   4:                APFS Volume Recovery                831.9 MB   disk3s3
+   5:                APFS Volume Data                    20.9 GB    disk3s5
+   6:                APFS Volume VM                      20.5 KB    disk3s6
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ dscl . -list /Users
+_accessoryupdater
+_amavisd
+_analyticsd
+_appinstalld
+_appleevents
+_applepay
+_appowner
+_appserver
+_appstore
+_ard
+_assetcache
+_astris
+_atsserver
+_avbdeviced
+_calendar
+_captiveagent
+_ces
+_clamav
+_cmiodalassistants
+_coreaudiod
+_coremediaiod
+_coreml
+_ctkd
+_cvmsroot
+_cvs
+_cyrus
+_darwindaemon
+_datadetectors
+_demod
+_devdocs
+_devicemgr
+_diskimagesiod
+_displaypolicyd
+_distnote
+_dovecot
+_dovenull
+_dpaudio
+_driverkit
+_eppc
+_findmydevice
+_fpsd
+_ftp
+_gamecontrollerd
+_geod
+_hidd
+_iconservices
+_installassistant
+_installcoordinationd
+_installer
+_jabber
+_kadmin_admin
+_kadmin_changepw
+_knowledgegraphd
+_krb_anonymous
+_krb_changepw
+_krb_kadmin
+_krb_kerberos
+_krb_krbtgt
+_krbfast
+_krbtgt
+_launchservicesd
+_lda
+_locationd
+_logd
+_lp
+_mailman
+_mbsetupuser
+_mcxalr
+_mdnsresponder
+_mobileasset
+_mysql
+_nearbyd
+_netbios
+_netstatistics
+_networkd
+_notification_proxy
+_nsurlsessiond
+_oahd
+_ondemand
+_postfix
+_postgres
+_qtss
+_reportmemoryexception
+_rmd
+_sandbox
+_screensaver
+_scsd
+_securityagent
+_sntpd
+_softwareupdate
+_spotlight
+_sshd
+_svn
+_taskgated
+_teamsserver
+_timed
+_timezone
+_tokend
+_trustd
+_trustevaluationagent
+_unknown
+_update_sharing
+_usbmuxd
+_uucp
+_warmd
+_webauthserver
+_windowserver
+_www
+_wwwproxy
+_xserverdocs
+administrator
+daemon
+nobody
+root
+</code></pre></div>]]></content>
+        </item>
         
         <item>
             <title>macOS Restart ssh</title>
