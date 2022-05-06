@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cmake on Michael Madden&#39;s Blog</title>
+    <link>https://mikemadden42.github.io/tags/cmake/</link>
+    <description>Recent content in cmake on Michael Madden&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+    <lastBuildDate>Fri, 06 May 2022 06:28:31 -0500</lastBuildDate><atom:link href="https://mikemadden42.github.io/tags/cmake/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Thoughts on Windows Development</title>
+      <link>https://mikemadden42.github.io/posts/thoughts-on-windows-development/</link>
+      <pubDate>Fri, 06 May 2022 06:28:31 -0500</pubDate>
+      
+      <guid>https://mikemadden42.github.io/posts/thoughts-on-windows-development/</guid>
+      <description>I do most of my development work on macOS. Occasionally, I need to test a program or script on Windows.
+If I&amp;rsquo;m building a C++ tool on Windows, I rely on cmake and ninja to abstract the details of setting all the various compiler flags to create a debug/release build.
+With these two tools, creating a release build is simple on macOS, Linux, and Windows.
+mkdir build cd build cmake -GNinja -DCMAKE_BUILD_TYPE=Release .</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -7,7 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Sat, 18 Dec 2021 13:45:11 -0600</lastBuildDate><atom:link href="https://mikemadden42.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 06 May 2022 06:28:31 -0500</lastBuildDate><atom:link href="https://mikemadden42.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Thoughts on Windows Development</title>
+      <link>https://mikemadden42.github.io/posts/thoughts-on-windows-development/</link>
+      <pubDate>Fri, 06 May 2022 06:28:31 -0500</pubDate>
+      
+      <guid>https://mikemadden42.github.io/posts/thoughts-on-windows-development/</guid>
+      <description>I do most of my development work on macOS. Occasionally, I need to test a program or script on Windows.
+If I&amp;rsquo;m building a C++ tool on Windows, I rely on cmake and ninja to abstract the details of setting all the various compiler flags to create a debug/release build.
+With these two tools, creating a release build is simple on macOS, Linux, and Windows.
+mkdir build cd build cmake -GNinja -DCMAKE_BUILD_TYPE=Release .</description>
+    </item>
+    
     <item>
       <title>More macOS System Information</title>
       <link>https://mikemadden42.github.io/posts/more-macos-system-information/</link>
@@ -15,7 +27,7 @@
       
       <guid>https://mikemadden42.github.io/posts/more-macos-system-information/</guid>
       <description>Here are a few more utilities to find system information on macOS.
-$ uptime 11:48 up 3:01, 3 users, load averages: 1.09 0.97 0.93 $ diskutil list /dev/disk0 (internal): #: TYPE NAME SIZE IDENTIFIER 0: GUID_partition_scheme 251.0 GB disk0 1: Apple_APFS_ISC 524.3 MB disk0s1 2: Apple_APFS Container disk3 245.1 GB disk0s2 3: Apple_APFS_Recovery 5.4 GB disk0s3 /dev/disk3 (synthesized): #: TYPE NAME SIZE IDENTIFIER 0: APFS Container Scheme - +245.1 GB disk3 Physical Store disk0s2 1: APFS Volume Macintosh HD 15.</description>
+$ uptime 11:48 up 3:01, 3 users, load averages: 1.09 0.97 0.93 $ diskutil list /dev/disk0 (internal):  #: TYPE NAME SIZE IDENTIFIER  0: GUID_partition_scheme 251.0 GB disk0  1: Apple_APFS_ISC 524.3 MB disk0s1  2: Apple_APFS Container disk3 245.1 GB disk0s2  3: Apple_APFS_Recovery 5.4 GB disk0s3  /dev/disk3 (synthesized):  #: TYPE NAME SIZE IDENTIFIER  0: APFS Container Scheme - +245.</description>
     </item>
     
     <item>
@@ -35,7 +47,7 @@ $ sudo launchctl unload /System/Library/LaunchDaemons/ssh.plist $ sudo launchctl
       
       <guid>https://mikemadden42.github.io/posts/macos-system-information/</guid>
       <description>There are many useful command line utilities to get the system information on a macOS system.
-$ arch arm64 $ hostinfo Mach kernel version: Darwin Kernel Version 20.6.0: Mon Aug 30 06:12:20 PDT 2021; root:xnu-7195.141.6~3/RELEASE_ARM64_T8101 Kernel configured for up to 8 processors. 8 processors are physically available. 8 processors are logically available. Processor type: arm64e (ARM64E) Processors active: 0 1 2 3 4 5 6 7 Primary memory available: 16.00 gigabytes Default processor set: 417 tasks, 1561 threads, 8 processors Load average: 10.</description>
+$ arch arm64  $ hostinfo Mach kernel version:  Darwin Kernel Version 20.6.0: Mon Aug 30 06:12:20 PDT 2021; root:xnu-7195.141.6~3/RELEASE_ARM64_T8101 Kernel configured for up to 8 processors. 8 processors are physically available. 8 processors are logically available. Processor type: arm64e (ARM64E) Processors active: 0 1 2 3 4 5 6 7 Primary memory available: 16.</description>
     </item>
     
     <item>
@@ -66,7 +78,7 @@ $ openssl speed rc4 Doing rc4 for 3s on 16 size blocks: 196567633 rc4&amp;#39;s 
       <guid>https://mikemadden42.github.io/posts/mac-mini-cpu-speed/</guid>
       <description>I&amp;rsquo;m very impressed with the speed of the 2020 M1 Mac Mini
 I first tested the CPU speed with 7z b from p7zip.
-$ 7z b 7-Zip [64] 17.04 : Copyright (c) 1999-2021 Igor Pavlov : 2017-08-28 p7zip Version 17.04 (locale=utf8,Utf16=on,HugeFiles=on,64 bits,8 CPUs LE) LE CPU Freq: 2249 2398 2230 3030 3200 3199 3201 3199 3198 RAM size: 16384 MB, # CPU hardware threads: 8 RAM usage: 1765 MB, # Benchmark threads: 8 Compressing | Decompressing Dict Speed Usage R/U Rating | Speed Usage R/U Rating KiB/s % MIPS MIPS | KiB/s % MIPS MIPS 22: 40736 727 5454 39628 | 346914 794 3726 29590 23: 39706 761 5320 40457 | 341347 793 3724 29539 24: 38128 765 5358 40996 | 334291 790 3716 29340 25: 37176 768 5524 42447 | 328274 789 3702 29215 ---------------------------------- | ------------------------------ Avr: 755 5414 40882 | 792 3717 29421 Tot: 773 4565 35151 The benchmark numbers for compressing/decompressing are almost twice as fast as my 2015 MacBook Pro.</description>
+$ 7z b  7-Zip [64] 17.04 : Copyright (c) 1999-2021 Igor Pavlov : 2017-08-28 p7zip Version 17.04 (locale=utf8,Utf16=on,HugeFiles=on,64 bits,8 CPUs LE)  LE CPU Freq: 2249 2398 2230 3030 3200 3199 3201 3199 3198  RAM size: 16384 MB, # CPU hardware threads: 8 RAM usage: 1765 MB, # Benchmark threads: 8   Compressing | Decompressing Dict Speed Usage R/U Rating | Speed Usage R/U Rating  KiB/s % MIPS MIPS | KiB/s % MIPS MIPS  22: 40736 727 5454 39628 | 346914 794 3726 29590 23: 39706 761 5320 40457 | 341347 793 3724 29539 24: 38128 765 5358 40996 | 334291 790 3716 29340 25: 37176 768 5524 42447 | 328274 789 3702 29215 ---------------------------------- | ------------------------------ Avr: 755 5414 40882 | 792 3717 29421 Tot: 773 4565 35151 The benchmark numbers for compressing/decompressing are almost twice as fast as my 2015 MacBook Pro.</description>
     </item>
     
     <item>

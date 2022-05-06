@@ -2,19 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://mikemadden42.github.io/tags/c&#43;&#43;/</loc>
+    <lastmod>2022-05-06T06:28:31-05:00</lastmod>
+  </url><url>
+    <loc>https://mikemadden42.github.io/tags/cmake/</loc>
+    <lastmod>2022-05-06T06:28:31-05:00</lastmod>
+  </url><url>
+    <loc>https://mikemadden42.github.io/</loc>
+    <lastmod>2022-05-06T06:28:31-05:00</lastmod>
+  </url><url>
+    <loc>https://mikemadden42.github.io/tags/nmake/</loc>
+    <lastmod>2022-05-06T06:28:31-05:00</lastmod>
+  </url><url>
+    <loc>https://mikemadden42.github.io/posts/</loc>
+    <lastmod>2022-05-06T06:28:31-05:00</lastmod>
+  </url><url>
+    <loc>https://mikemadden42.github.io/tags/</loc>
+    <lastmod>2022-05-06T06:28:31-05:00</lastmod>
+  </url><url>
+    <loc>https://mikemadden42.github.io/posts/thoughts-on-windows-development/</loc>
+    <lastmod>2022-05-06T06:28:31-05:00</lastmod>
+  </url><url>
+    <loc>https://mikemadden42.github.io/tags/windows/</loc>
+    <lastmod>2022-05-06T06:28:31-05:00</lastmod>
+  </url><url>
     <loc>https://mikemadden42.github.io/tags/macos/</loc>
     <lastmod>2021-12-18T13:45:11-06:00</lastmod>
   </url><url>
-    <loc>https://mikemadden42.github.io/</loc>
-    <lastmod>2021-12-18T13:45:11-06:00</lastmod>
-  </url><url>
     <loc>https://mikemadden42.github.io/posts/more-macos-system-information/</loc>
-    <lastmod>2021-12-18T13:45:11-06:00</lastmod>
-  </url><url>
-    <loc>https://mikemadden42.github.io/posts/</loc>
-    <lastmod>2021-12-18T13:45:11-06:00</lastmod>
-  </url><url>
-    <loc>https://mikemadden42.github.io/tags/</loc>
     <lastmod>2021-12-18T13:45:11-06:00</lastmod>
   </url><url>
     <loc>https://mikemadden42.github.io/posts/macos-restart-ssh/</loc>

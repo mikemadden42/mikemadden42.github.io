@@ -6,8 +6,75 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Sat, 18 Dec 2021 13:45:11 -0600</lastBuildDate>
+        <lastBuildDate>Fri, 06 May 2022 06:28:31 -0500</lastBuildDate>
         <atom:link href="https://mikemadden42.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Thoughts on Windows Development</title>
+            <link>https://mikemadden42.github.io/posts/thoughts-on-windows-development/</link>
+            <pubDate>Fri, 06 May 2022 06:28:31 -0500</pubDate>
+            
+            <guid>https://mikemadden42.github.io/posts/thoughts-on-windows-development/</guid>
+            <description>I do most of my development work on macOS. Occasionally, I need to test a program or script on Windows.
+If I&amp;rsquo;m building a C++ tool on Windows, I rely on cmake and ninja to abstract the details of setting all the various compiler flags to create a debug/release build.
+With these two tools, creating a release build is simple on macOS, Linux, and Windows.
+mkdir build cd build cmake -GNinja -DCMAKE_BUILD_TYPE=Release .</description>
+            <content type="html"><![CDATA[<p>I do most of my development work on macOS.  Occasionally, I need to test a program or script on Windows.</p>
+<p>If I&rsquo;m building a C++ tool on Windows, I rely on <a href="https://cmake.org/download/">cmake</a> and <a href="https://ninja-build.org/">ninja</a> to abstract the details of setting all the various compiler flags to create a debug/release build.</p>
+<p>With these two tools, creating a release build is simple on macOS, Linux, and Windows.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>mkdir build
+</span></span><span style="display:flex;"><span>cd build
+</span></span><span style="display:flex;"><span>cmake -GNinja -DCMAKE_BUILD_TYPE<span style="color:#f92672">=</span>Release ..
+</span></span><span style="display:flex;"><span>ninja
+</span></span></code></pre></div><p>You can make it even easier by letting cmake create the build directory.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cmake -B build -DCMAKE_BUILD_TYPE<span style="color:#f92672">=</span>Release -GNinja
+</span></span><span style="display:flex;"><span>cmake --build build --config Release
+</span></span></code></pre></div><p>What if you find yourself on a Windows system that has an older version of Visual Studio or Visual Studio Build Tools, but the system does not have cmake or ninja. You could download and install these tools, but what if the Windows system is isolated from the internet or you do not have administrative rights?  In the rest of this post, we&rsquo;ll walk though using <code>cl.exe</code> and <code>nmake.exe</code> to build some simple C++ programs.</p>
+<p>We&rsquo;ll start with the canonical <code>Hello world</code> example.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> 
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span> () {
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Hello world!&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>If you used cmake &amp; ninja, the compile phase will looks like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cl.exe  /nologo /TP /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /O2 /Ob2 /DNDEBUG -std:c++17 /showIncludes /FoCMakeFiles<span style="color:#ae81ff">\h</span>ello.dir<span style="color:#ae81ff">\h</span>ello.cc.obj /FdCMakeFiles<span style="color:#ae81ff">\h</span>ello.dir<span style="color:#ae81ff">\ </span>/FS -c C:<span style="color:#ae81ff">\U</span>sers<span style="color:#ae81ff">\h</span>ulk<span style="color:#ae81ff">\s</span>rc<span style="color:#ae81ff">\h</span>ello<span style="color:#ae81ff">\h</span>ello.cc
+</span></span></code></pre></div><p>There are many options passed to <code>cl.exe</code>.  Let&rsquo;s explain each option.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>/nologo - Suppresses display of sign-on banner.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>/TP - Specifies all source files are C++.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>/DWIN32 - Define WIN32.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>/D_WINDOWS - Define _WINDOWS.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>/W3 - Set output warning level to 3.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>/GR - Enables run-time type information <span style="color:#f92672">(</span>RTTI<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>/EHs - Enable C++ exception handling <span style="color:#f92672">(</span>no SEH exceptions<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>/EHc - extern <span style="color:#e6db74">&#34;C&#34;</span> defaults to nothrow.
+</span></span><span style="display:flex;"><span>/EHsc - Set both the above options.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>/MD - Compiles to create a multithreaded DLL, by using MSVCRT.lib.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>/O2 - Creates fast code.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>/Ob2 - Controls inline expansion.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>/DNDEBUG - Define NDEBUG.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>-std:c++17 - Specify C++ <span style="color:#ae81ff">17</span> standard.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>/FS - Forces writes to the PDB file to be serialized through MSPDBSRV.EXE.
+</span></span></code></pre></div><p>I started adding options one at a time and came up with this command line which built an executable with a size around 10 KB.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cl.exe /DNDEBUG /EHsc /nologo /O2 /MD /TP /W3 hello.cc
+</span></span></code></pre></div><p>I did not end up using the <code>/GR</code>, <code>/Ob2</code>, <code>/FS</code> options initially; I need to explore them more. The older version of Visual Studio Tools I was using did not support <code>-std:c++17</code>.</p>
+<p>Instead of typing the long build line for <code>cl.exe</code>, I made the following NMake Makefile.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>hello: hello.cc
+</span></span><span style="display:flex;"><span> cl.exe /DNDEBUG /EHsc /nologo /O2 /MD /TP /W3 hello.cc
+</span></span></code></pre></div><p>You can then build the hello program with a single <code>nmake</code> command.</p>
+]]></content>
+        </item>
         
         <item>
             <title>More macOS System Information</title>
@@ -16,144 +83,144 @@
             
             <guid>https://mikemadden42.github.io/posts/more-macos-system-information/</guid>
             <description>Here are a few more utilities to find system information on macOS.
-$ uptime 11:48 up 3:01, 3 users, load averages: 1.09 0.97 0.93 $ diskutil list /dev/disk0 (internal): #: TYPE NAME SIZE IDENTIFIER 0: GUID_partition_scheme 251.0 GB disk0 1: Apple_APFS_ISC 524.3 MB disk0s1 2: Apple_APFS Container disk3 245.1 GB disk0s2 3: Apple_APFS_Recovery 5.4 GB disk0s3 /dev/disk3 (synthesized): #: TYPE NAME SIZE IDENTIFIER 0: APFS Container Scheme - +245.1 GB disk3 Physical Store disk0s2 1: APFS Volume Macintosh HD 15.</description>
+$ uptime 11:48 up 3:01, 3 users, load averages: 1.09 0.97 0.93 $ diskutil list /dev/disk0 (internal):  #: TYPE NAME SIZE IDENTIFIER  0: GUID_partition_scheme 251.0 GB disk0  1: Apple_APFS_ISC 524.3 MB disk0s1  2: Apple_APFS Container disk3 245.1 GB disk0s2  3: Apple_APFS_Recovery 5.4 GB disk0s3  /dev/disk3 (synthesized):  #: TYPE NAME SIZE IDENTIFIER  0: APFS Container Scheme - +245.</description>
             <content type="html"><![CDATA[<p>Here are a few more utilities to find system information on macOS.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ uptime
-11:48  up  3:01, <span style="color:#ae81ff">3</span> users, load averages: 1.09 0.97 0.93
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ diskutil list
-/dev/disk0 <span style="color:#f92672">(</span>internal<span style="color:#f92672">)</span>:
-   <span style="color:#75715e">#:                       TYPE NAME                    SIZE       IDENTIFIER</span>
-   0:      GUID_partition_scheme                         251.0 GB   disk0
-   1:             Apple_APFS_ISC                         524.3 MB   disk0s1
-   2:                 Apple_APFS Container disk3         245.1 GB   disk0s2
-   3:        Apple_APFS_Recovery                         5.4 GB     disk0s3
-
-/dev/disk3 <span style="color:#f92672">(</span>synthesized<span style="color:#f92672">)</span>:
-   <span style="color:#75715e">#:                       TYPE NAME                    SIZE       IDENTIFIER</span>
-   0:      APFS Container Scheme -                      +245.1 GB   disk3
-                                 Physical Store disk0s2
-   1:                APFS Volume Macintosh HD            15.8 GB    disk3s1
-   2:              APFS Snapshot com.apple.os.update-... 15.8 GB    disk3s1s1
-   3:                APFS Volume Preboot                 460.9 MB   disk3s2
-   4:                APFS Volume Recovery                831.9 MB   disk3s3
-   5:                APFS Volume Data                    20.9 GB    disk3s5
-   6:                APFS Volume VM                      20.5 KB    disk3s6
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ dscl . -list /Users
-_accessoryupdater
-_amavisd
-_analyticsd
-_appinstalld
-_appleevents
-_applepay
-_appowner
-_appserver
-_appstore
-_ard
-_assetcache
-_astris
-_atsserver
-_avbdeviced
-_calendar
-_captiveagent
-_ces
-_clamav
-_cmiodalassistants
-_coreaudiod
-_coremediaiod
-_coreml
-_ctkd
-_cvmsroot
-_cvs
-_cyrus
-_darwindaemon
-_datadetectors
-_demod
-_devdocs
-_devicemgr
-_diskimagesiod
-_displaypolicyd
-_distnote
-_dovecot
-_dovenull
-_dpaudio
-_driverkit
-_eppc
-_findmydevice
-_fpsd
-_ftp
-_gamecontrollerd
-_geod
-_hidd
-_iconservices
-_installassistant
-_installcoordinationd
-_installer
-_jabber
-_kadmin_admin
-_kadmin_changepw
-_knowledgegraphd
-_krb_anonymous
-_krb_changepw
-_krb_kadmin
-_krb_kerberos
-_krb_krbtgt
-_krbfast
-_krbtgt
-_launchservicesd
-_lda
-_locationd
-_logd
-_lp
-_mailman
-_mbsetupuser
-_mcxalr
-_mdnsresponder
-_mobileasset
-_mysql
-_nearbyd
-_netbios
-_netstatistics
-_networkd
-_notification_proxy
-_nsurlsessiond
-_oahd
-_ondemand
-_postfix
-_postgres
-_qtss
-_reportmemoryexception
-_rmd
-_sandbox
-_screensaver
-_scsd
-_securityagent
-_sntpd
-_softwareupdate
-_spotlight
-_sshd
-_svn
-_taskgated
-_teamsserver
-_timed
-_timezone
-_tokend
-_trustd
-_trustevaluationagent
-_unknown
-_update_sharing
-_usbmuxd
-_uucp
-_warmd
-_webauthserver
-_windowserver
-_www
-_wwwproxy
-_xserverdocs
-administrator
-daemon
-nobody
-root
-</code></pre></div>]]></content>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ uptime
+</span></span><span style="display:flex;"><span>11:48  up  3:01, <span style="color:#ae81ff">3</span> users, load averages: 1.09 0.97 0.93
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ diskutil list
+</span></span><span style="display:flex;"><span>/dev/disk0 <span style="color:#f92672">(</span>internal<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">#:                       TYPE NAME                    SIZE       IDENTIFIER</span>
+</span></span><span style="display:flex;"><span>   0:      GUID_partition_scheme                         251.0 GB   disk0
+</span></span><span style="display:flex;"><span>   1:             Apple_APFS_ISC                         524.3 MB   disk0s1
+</span></span><span style="display:flex;"><span>   2:                 Apple_APFS Container disk3         245.1 GB   disk0s2
+</span></span><span style="display:flex;"><span>   3:        Apple_APFS_Recovery                         5.4 GB     disk0s3
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>/dev/disk3 <span style="color:#f92672">(</span>synthesized<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">#:                       TYPE NAME                    SIZE       IDENTIFIER</span>
+</span></span><span style="display:flex;"><span>   0:      APFS Container Scheme -                      +245.1 GB   disk3
+</span></span><span style="display:flex;"><span>                                 Physical Store disk0s2
+</span></span><span style="display:flex;"><span>   1:                APFS Volume Macintosh HD            15.8 GB    disk3s1
+</span></span><span style="display:flex;"><span>   2:              APFS Snapshot com.apple.os.update-... 15.8 GB    disk3s1s1
+</span></span><span style="display:flex;"><span>   3:                APFS Volume Preboot                 460.9 MB   disk3s2
+</span></span><span style="display:flex;"><span>   4:                APFS Volume Recovery                831.9 MB   disk3s3
+</span></span><span style="display:flex;"><span>   5:                APFS Volume Data                    20.9 GB    disk3s5
+</span></span><span style="display:flex;"><span>   6:                APFS Volume VM                      20.5 KB    disk3s6
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ dscl . -list /Users
+</span></span><span style="display:flex;"><span>_accessoryupdater
+</span></span><span style="display:flex;"><span>_amavisd
+</span></span><span style="display:flex;"><span>_analyticsd
+</span></span><span style="display:flex;"><span>_appinstalld
+</span></span><span style="display:flex;"><span>_appleevents
+</span></span><span style="display:flex;"><span>_applepay
+</span></span><span style="display:flex;"><span>_appowner
+</span></span><span style="display:flex;"><span>_appserver
+</span></span><span style="display:flex;"><span>_appstore
+</span></span><span style="display:flex;"><span>_ard
+</span></span><span style="display:flex;"><span>_assetcache
+</span></span><span style="display:flex;"><span>_astris
+</span></span><span style="display:flex;"><span>_atsserver
+</span></span><span style="display:flex;"><span>_avbdeviced
+</span></span><span style="display:flex;"><span>_calendar
+</span></span><span style="display:flex;"><span>_captiveagent
+</span></span><span style="display:flex;"><span>_ces
+</span></span><span style="display:flex;"><span>_clamav
+</span></span><span style="display:flex;"><span>_cmiodalassistants
+</span></span><span style="display:flex;"><span>_coreaudiod
+</span></span><span style="display:flex;"><span>_coremediaiod
+</span></span><span style="display:flex;"><span>_coreml
+</span></span><span style="display:flex;"><span>_ctkd
+</span></span><span style="display:flex;"><span>_cvmsroot
+</span></span><span style="display:flex;"><span>_cvs
+</span></span><span style="display:flex;"><span>_cyrus
+</span></span><span style="display:flex;"><span>_darwindaemon
+</span></span><span style="display:flex;"><span>_datadetectors
+</span></span><span style="display:flex;"><span>_demod
+</span></span><span style="display:flex;"><span>_devdocs
+</span></span><span style="display:flex;"><span>_devicemgr
+</span></span><span style="display:flex;"><span>_diskimagesiod
+</span></span><span style="display:flex;"><span>_displaypolicyd
+</span></span><span style="display:flex;"><span>_distnote
+</span></span><span style="display:flex;"><span>_dovecot
+</span></span><span style="display:flex;"><span>_dovenull
+</span></span><span style="display:flex;"><span>_dpaudio
+</span></span><span style="display:flex;"><span>_driverkit
+</span></span><span style="display:flex;"><span>_eppc
+</span></span><span style="display:flex;"><span>_findmydevice
+</span></span><span style="display:flex;"><span>_fpsd
+</span></span><span style="display:flex;"><span>_ftp
+</span></span><span style="display:flex;"><span>_gamecontrollerd
+</span></span><span style="display:flex;"><span>_geod
+</span></span><span style="display:flex;"><span>_hidd
+</span></span><span style="display:flex;"><span>_iconservices
+</span></span><span style="display:flex;"><span>_installassistant
+</span></span><span style="display:flex;"><span>_installcoordinationd
+</span></span><span style="display:flex;"><span>_installer
+</span></span><span style="display:flex;"><span>_jabber
+</span></span><span style="display:flex;"><span>_kadmin_admin
+</span></span><span style="display:flex;"><span>_kadmin_changepw
+</span></span><span style="display:flex;"><span>_knowledgegraphd
+</span></span><span style="display:flex;"><span>_krb_anonymous
+</span></span><span style="display:flex;"><span>_krb_changepw
+</span></span><span style="display:flex;"><span>_krb_kadmin
+</span></span><span style="display:flex;"><span>_krb_kerberos
+</span></span><span style="display:flex;"><span>_krb_krbtgt
+</span></span><span style="display:flex;"><span>_krbfast
+</span></span><span style="display:flex;"><span>_krbtgt
+</span></span><span style="display:flex;"><span>_launchservicesd
+</span></span><span style="display:flex;"><span>_lda
+</span></span><span style="display:flex;"><span>_locationd
+</span></span><span style="display:flex;"><span>_logd
+</span></span><span style="display:flex;"><span>_lp
+</span></span><span style="display:flex;"><span>_mailman
+</span></span><span style="display:flex;"><span>_mbsetupuser
+</span></span><span style="display:flex;"><span>_mcxalr
+</span></span><span style="display:flex;"><span>_mdnsresponder
+</span></span><span style="display:flex;"><span>_mobileasset
+</span></span><span style="display:flex;"><span>_mysql
+</span></span><span style="display:flex;"><span>_nearbyd
+</span></span><span style="display:flex;"><span>_netbios
+</span></span><span style="display:flex;"><span>_netstatistics
+</span></span><span style="display:flex;"><span>_networkd
+</span></span><span style="display:flex;"><span>_notification_proxy
+</span></span><span style="display:flex;"><span>_nsurlsessiond
+</span></span><span style="display:flex;"><span>_oahd
+</span></span><span style="display:flex;"><span>_ondemand
+</span></span><span style="display:flex;"><span>_postfix
+</span></span><span style="display:flex;"><span>_postgres
+</span></span><span style="display:flex;"><span>_qtss
+</span></span><span style="display:flex;"><span>_reportmemoryexception
+</span></span><span style="display:flex;"><span>_rmd
+</span></span><span style="display:flex;"><span>_sandbox
+</span></span><span style="display:flex;"><span>_screensaver
+</span></span><span style="display:flex;"><span>_scsd
+</span></span><span style="display:flex;"><span>_securityagent
+</span></span><span style="display:flex;"><span>_sntpd
+</span></span><span style="display:flex;"><span>_softwareupdate
+</span></span><span style="display:flex;"><span>_spotlight
+</span></span><span style="display:flex;"><span>_sshd
+</span></span><span style="display:flex;"><span>_svn
+</span></span><span style="display:flex;"><span>_taskgated
+</span></span><span style="display:flex;"><span>_teamsserver
+</span></span><span style="display:flex;"><span>_timed
+</span></span><span style="display:flex;"><span>_timezone
+</span></span><span style="display:flex;"><span>_tokend
+</span></span><span style="display:flex;"><span>_trustd
+</span></span><span style="display:flex;"><span>_trustevaluationagent
+</span></span><span style="display:flex;"><span>_unknown
+</span></span><span style="display:flex;"><span>_update_sharing
+</span></span><span style="display:flex;"><span>_usbmuxd
+</span></span><span style="display:flex;"><span>_uucp
+</span></span><span style="display:flex;"><span>_warmd
+</span></span><span style="display:flex;"><span>_webauthserver
+</span></span><span style="display:flex;"><span>_windowserver
+</span></span><span style="display:flex;"><span>_www
+</span></span><span style="display:flex;"><span>_wwwproxy
+</span></span><span style="display:flex;"><span>_xserverdocs
+</span></span><span style="display:flex;"><span>administrator
+</span></span><span style="display:flex;"><span>daemon
+</span></span><span style="display:flex;"><span>nobody
+</span></span><span style="display:flex;"><span>root
+</span></span></code></pre></div>]]></content>
         </item>
         
         <item>
@@ -165,9 +232,9 @@ root
             <description>If you ever run into a situation when you can VNC into your Mac, but ssh isn&amp;rsquo;t working you may try the following. This has happened to me a couple times with my Mac Mini.
 $ sudo launchctl unload /System/Library/LaunchDaemons/ssh.plist $ sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist </description>
             <content type="html"><![CDATA[<p>If you ever run into a situation when you can VNC into your Mac, but ssh isn&rsquo;t working you may try the following.  This has happened to me a couple times with my Mac Mini.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo launchctl unload /System/Library/LaunchDaemons/ssh.plist
-$ sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
-</code></pre></div>]]></content>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo launchctl unload /System/Library/LaunchDaemons/ssh.plist
+</span></span><span style="display:flex;"><span>$ sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
+</span></span></code></pre></div>]]></content>
         </item>
         
         <item>
@@ -177,48 +244,48 @@ $ sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
             
             <guid>https://mikemadden42.github.io/posts/macos-system-information/</guid>
             <description>There are many useful command line utilities to get the system information on a macOS system.
-$ arch arm64 $ hostinfo Mach kernel version: Darwin Kernel Version 20.6.0: Mon Aug 30 06:12:20 PDT 2021; root:xnu-7195.141.6~3/RELEASE_ARM64_T8101 Kernel configured for up to 8 processors. 8 processors are physically available. 8 processors are logically available. Processor type: arm64e (ARM64E) Processors active: 0 1 2 3 4 5 6 7 Primary memory available: 16.00 gigabytes Default processor set: 417 tasks, 1561 threads, 8 processors Load average: 10.</description>
+$ arch arm64  $ hostinfo Mach kernel version:  Darwin Kernel Version 20.6.0: Mon Aug 30 06:12:20 PDT 2021; root:xnu-7195.141.6~3/RELEASE_ARM64_T8101 Kernel configured for up to 8 processors. 8 processors are physically available. 8 processors are logically available. Processor type: arm64e (ARM64E) Processors active: 0 1 2 3 4 5 6 7 Primary memory available: 16.</description>
             <content type="html"><![CDATA[<p>There are many useful command line utilities to get the system information on a macOS system.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ arch
-arm64
-
-$ hostinfo
-Mach kernel version:
-         Darwin Kernel Version 20.6.0: Mon Aug <span style="color:#ae81ff">30</span> 06:12:20 PDT 2021; root:xnu-7195.141.6~3/RELEASE_ARM64_T8101
-Kernel configured <span style="color:#66d9ef">for</span> up to <span style="color:#ae81ff">8</span> processors.
-<span style="color:#ae81ff">8</span> processors are physically available.
-<span style="color:#ae81ff">8</span> processors are logically available.
-Processor type: arm64e <span style="color:#f92672">(</span>ARM64E<span style="color:#f92672">)</span>
-Processors active: <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">5</span> <span style="color:#ae81ff">6</span> <span style="color:#ae81ff">7</span>
-Primary memory available: 16.00 gigabytes
-Default processor set: <span style="color:#ae81ff">417</span> tasks, <span style="color:#ae81ff">1561</span> threads, <span style="color:#ae81ff">8</span> processors
-Load average: 10.61, Mach factor: 0.66
-
-$ sw_vers
-ProductName:    macOS
-ProductVersion: 11.6
-BuildVersion:   20G165
-
-$ system_profiler SPHardwareDataType
-Hardware:
-
-    Hardware Overview:
-
-      Model Name: Mac mini
-      Model Identifier: Macmini9,1
-      Chip: Apple M1
-      Total Number of Cores: <span style="color:#ae81ff">8</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">4</span> performance and <span style="color:#ae81ff">4</span> efficiency<span style="color:#f92672">)</span>
-      Memory: <span style="color:#ae81ff">16</span> GB
-      System Firmware Version: 6723.140.2
-      OS Loader Version: 6723.140.2
-      Serial Number <span style="color:#f92672">(</span>system<span style="color:#f92672">)</span>: XXXXXXXXXXXX
-      Hardware UUID: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
-      Provisioning UDID: XXXXXXXX-XXXXXXXXXXXXXXXX
-      Activation Lock Status: Disabled
-
-$ uname -a
-Darwin 49097.local 20.6.0 Darwin Kernel Version 20.6.0: Mon Aug <span style="color:#ae81ff">30</span> 06:12:20 PDT 2021; root:xnu-7195.141.6~3/RELEASE_ARM64_T8101 arm64
-</code></pre></div>]]></content>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ arch
+</span></span><span style="display:flex;"><span>arm64
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ hostinfo
+</span></span><span style="display:flex;"><span>Mach kernel version:
+</span></span><span style="display:flex;"><span>         Darwin Kernel Version 20.6.0: Mon Aug <span style="color:#ae81ff">30</span> 06:12:20 PDT 2021; root:xnu-7195.141.6~3/RELEASE_ARM64_T8101
+</span></span><span style="display:flex;"><span>Kernel configured <span style="color:#66d9ef">for</span> up to <span style="color:#ae81ff">8</span> processors.
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">8</span> processors are physically available.
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">8</span> processors are logically available.
+</span></span><span style="display:flex;"><span>Processor type: arm64e <span style="color:#f92672">(</span>ARM64E<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Processors active: <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">5</span> <span style="color:#ae81ff">6</span> <span style="color:#ae81ff">7</span>
+</span></span><span style="display:flex;"><span>Primary memory available: 16.00 gigabytes
+</span></span><span style="display:flex;"><span>Default processor set: <span style="color:#ae81ff">417</span> tasks, <span style="color:#ae81ff">1561</span> threads, <span style="color:#ae81ff">8</span> processors
+</span></span><span style="display:flex;"><span>Load average: 10.61, Mach factor: 0.66
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ sw_vers
+</span></span><span style="display:flex;"><span>ProductName:    macOS
+</span></span><span style="display:flex;"><span>ProductVersion: 11.6
+</span></span><span style="display:flex;"><span>BuildVersion:   20G165
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ system_profiler SPHardwareDataType
+</span></span><span style="display:flex;"><span>Hardware:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Hardware Overview:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      Model Name: Mac mini
+</span></span><span style="display:flex;"><span>      Model Identifier: Macmini9,1
+</span></span><span style="display:flex;"><span>      Chip: Apple M1
+</span></span><span style="display:flex;"><span>      Total Number of Cores: <span style="color:#ae81ff">8</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">4</span> performance and <span style="color:#ae81ff">4</span> efficiency<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      Memory: <span style="color:#ae81ff">16</span> GB
+</span></span><span style="display:flex;"><span>      System Firmware Version: 6723.140.2
+</span></span><span style="display:flex;"><span>      OS Loader Version: 6723.140.2
+</span></span><span style="display:flex;"><span>      Serial Number <span style="color:#f92672">(</span>system<span style="color:#f92672">)</span>: XXXXXXXXXXXX
+</span></span><span style="display:flex;"><span>      Hardware UUID: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+</span></span><span style="display:flex;"><span>      Provisioning UDID: XXXXXXXX-XXXXXXXXXXXXXXXX
+</span></span><span style="display:flex;"><span>      Activation Lock Status: Disabled
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ uname -a
+</span></span><span style="display:flex;"><span>Darwin 49097.local 20.6.0 Darwin Kernel Version 20.6.0: Mon Aug <span style="color:#ae81ff">30</span> 06:12:20 PDT 2021; root:xnu-7195.141.6~3/RELEASE_ARM64_T8101 arm64
+</span></span></code></pre></div>]]></content>
         </item>
         
         <item>
@@ -243,34 +310,34 @@ I cannot wait to see if Apple reveals a 14/16 inch MacBook Pro with Apple Silico
             <description>The benchmarks for openssl on the 2020 Mac Mini are impressive.
 $ openssl speed rc4 Doing rc4 for 3s on 16 size blocks: 196567633 rc4&amp;#39;s in 3.01s Doing rc4 for 3s on 64 size blocks: 59755274 rc4&amp;#39;s in 3.01s Doing rc4 for 3s on 256 size blocks: 15735364 rc4&amp;#39;s in 3.01s Doing rc4 for 3s on 1024 size blocks: 3968584 rc4&amp;#39;s in 3.00s Doing rc4 for 3s on 8192 size blocks: 500071 rc4&amp;#39;s in 3.</description>
             <content type="html"><![CDATA[<p>The benchmarks for <code>openssl</code> on the 2020 Mac Mini are impressive.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ openssl speed rc4
-Doing rc4 <span style="color:#66d9ef">for</span> 3s on <span style="color:#ae81ff">16</span> size blocks: <span style="color:#ae81ff">196567633</span> rc4<span style="color:#e6db74">&#39;s in 3.01s
-</span><span style="color:#e6db74">Doing rc4 for 3s on 64 size blocks: 59755274 rc4&#39;</span>s in 3.01s
-Doing rc4 <span style="color:#66d9ef">for</span> 3s on <span style="color:#ae81ff">256</span> size blocks: <span style="color:#ae81ff">15735364</span> rc4<span style="color:#e6db74">&#39;s in 3.01s
-</span><span style="color:#e6db74">Doing rc4 for 3s on 1024 size blocks: 3968584 rc4&#39;</span>s in 3.00s
-Doing rc4 <span style="color:#66d9ef">for</span> 3s on <span style="color:#ae81ff">8192</span> size blocks: <span style="color:#ae81ff">500071</span> rc4<span style="color:#e6db74">&#39;s in 3.01s
-</span><span style="color:#e6db74">LibreSSL 2.8.3
-</span><span style="color:#e6db74">built on: date not available
-</span><span style="color:#e6db74">options:bn(64,64) rc4(ptr,int) des(idx,cisc,16,int) aes(partial) blowfish(idx)
-</span><span style="color:#e6db74">compiler: information not available
-</span><span style="color:#e6db74">The &#39;</span>numbers<span style="color:#960050;background-color:#1e0010">&#39;</span> are in 1000s of bytes per second processed.
-type             <span style="color:#ae81ff">16</span> bytes     <span style="color:#ae81ff">64</span> bytes    <span style="color:#ae81ff">256</span> bytes   <span style="color:#ae81ff">1024</span> bytes   <span style="color:#ae81ff">8192</span> bytes
-rc4            1046010.67k  1271776.09k  1339563.79k  1354086.88k  1362324.84
-</code></pre></div><p>Like the <code>7z</code> benchmark, the 2020 Mac Mini is close to twice as fast as my 2015 MacBook Pro.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ openssl speed rc4
-Doing rc4 <span style="color:#66d9ef">for</span> 3s on <span style="color:#ae81ff">16</span> size blocks: <span style="color:#ae81ff">88227131</span> rc4<span style="color:#e6db74">&#39;s in 2.99s
-</span><span style="color:#e6db74">Doing rc4 for 3s on 64 size blocks: 34107361 rc4&#39;</span>s in 2.99s
-Doing rc4 <span style="color:#66d9ef">for</span> 3s on <span style="color:#ae81ff">256</span> size blocks: <span style="color:#ae81ff">9773938</span> rc4<span style="color:#e6db74">&#39;s in 2.99s
-</span><span style="color:#e6db74">Doing rc4 for 3s on 1024 size blocks: 2462731 rc4&#39;</span>s in 2.99s
-Doing rc4 <span style="color:#66d9ef">for</span> 3s on <span style="color:#ae81ff">8192</span> size blocks: <span style="color:#ae81ff">322263</span> rc4<span style="color:#e6db74">&#39;s in 2.99s
-</span><span style="color:#e6db74">LibreSSL 2.8.3
-</span><span style="color:#e6db74">built on: date not available
-</span><span style="color:#e6db74">options:bn(64,64) rc4(16x,int) des(idx,cisc,16,int) aes(partial) blowfish(idx)
-</span><span style="color:#e6db74">compiler: information not available
-</span><span style="color:#e6db74">The &#39;</span>numbers<span style="color:#960050;background-color:#1e0010">&#39;</span> are in 1000s of bytes per second processed.
-type             <span style="color:#ae81ff">16</span> bytes     <span style="color:#ae81ff">64</span> bytes    <span style="color:#ae81ff">256</span> bytes   <span style="color:#ae81ff">1024</span> bytes   <span style="color:#ae81ff">8192</span> bytes
-rc4             471408.32k   729853.89k   837518.97k   843304.57k   883784.56k
-</code></pre></div>]]></content>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ openssl speed rc4
+</span></span><span style="display:flex;"><span>Doing rc4 <span style="color:#66d9ef">for</span> 3s on <span style="color:#ae81ff">16</span> size blocks: <span style="color:#ae81ff">196567633</span> rc4<span style="color:#e6db74">&#39;s in 3.01s
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Doing rc4 for 3s on 64 size blocks: 59755274 rc4&#39;</span>s in 3.01s
+</span></span><span style="display:flex;"><span>Doing rc4 <span style="color:#66d9ef">for</span> 3s on <span style="color:#ae81ff">256</span> size blocks: <span style="color:#ae81ff">15735364</span> rc4<span style="color:#e6db74">&#39;s in 3.01s
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Doing rc4 for 3s on 1024 size blocks: 3968584 rc4&#39;</span>s in 3.00s
+</span></span><span style="display:flex;"><span>Doing rc4 <span style="color:#66d9ef">for</span> 3s on <span style="color:#ae81ff">8192</span> size blocks: <span style="color:#ae81ff">500071</span> rc4<span style="color:#e6db74">&#39;s in 3.01s
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">LibreSSL 2.8.3
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">built on: date not available
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">options:bn(64,64) rc4(ptr,int) des(idx,cisc,16,int) aes(partial) blowfish(idx)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">compiler: information not available
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">The &#39;</span>numbers<span style="color:#960050;background-color:#1e0010">&#39;</span> are in 1000s of bytes per second processed.
+</span></span><span style="display:flex;"><span>type             <span style="color:#ae81ff">16</span> bytes     <span style="color:#ae81ff">64</span> bytes    <span style="color:#ae81ff">256</span> bytes   <span style="color:#ae81ff">1024</span> bytes   <span style="color:#ae81ff">8192</span> bytes
+</span></span><span style="display:flex;"><span>rc4            1046010.67k  1271776.09k  1339563.79k  1354086.88k  1362324.84
+</span></span></code></pre></div><p>Like the <code>7z</code> benchmark, the 2020 Mac Mini is close to twice as fast as my 2015 MacBook Pro.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ openssl speed rc4
+</span></span><span style="display:flex;"><span>Doing rc4 <span style="color:#66d9ef">for</span> 3s on <span style="color:#ae81ff">16</span> size blocks: <span style="color:#ae81ff">88227131</span> rc4<span style="color:#e6db74">&#39;s in 2.99s
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Doing rc4 for 3s on 64 size blocks: 34107361 rc4&#39;</span>s in 2.99s
+</span></span><span style="display:flex;"><span>Doing rc4 <span style="color:#66d9ef">for</span> 3s on <span style="color:#ae81ff">256</span> size blocks: <span style="color:#ae81ff">9773938</span> rc4<span style="color:#e6db74">&#39;s in 2.99s
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Doing rc4 for 3s on 1024 size blocks: 2462731 rc4&#39;</span>s in 2.99s
+</span></span><span style="display:flex;"><span>Doing rc4 <span style="color:#66d9ef">for</span> 3s on <span style="color:#ae81ff">8192</span> size blocks: <span style="color:#ae81ff">322263</span> rc4<span style="color:#e6db74">&#39;s in 2.99s
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">LibreSSL 2.8.3
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">built on: date not available
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">options:bn(64,64) rc4(16x,int) des(idx,cisc,16,int) aes(partial) blowfish(idx)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">compiler: information not available
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">The &#39;</span>numbers<span style="color:#960050;background-color:#1e0010">&#39;</span> are in 1000s of bytes per second processed.
+</span></span><span style="display:flex;"><span>type             <span style="color:#ae81ff">16</span> bytes     <span style="color:#ae81ff">64</span> bytes    <span style="color:#ae81ff">256</span> bytes   <span style="color:#ae81ff">1024</span> bytes   <span style="color:#ae81ff">8192</span> bytes
+</span></span><span style="display:flex;"><span>rc4             471408.32k   729853.89k   837518.97k   843304.57k   883784.56k
+</span></span></code></pre></div>]]></content>
         </item>
         
         <item>
@@ -281,55 +348,55 @@ rc4             471408.32k   729853.89k   837518.97k   843304.57k   883784.56k
             <guid>https://mikemadden42.github.io/posts/mac-mini-cpu-speed/</guid>
             <description>I&amp;rsquo;m very impressed with the speed of the 2020 M1 Mac Mini
 I first tested the CPU speed with 7z b from p7zip.
-$ 7z b 7-Zip [64] 17.04 : Copyright (c) 1999-2021 Igor Pavlov : 2017-08-28 p7zip Version 17.04 (locale=utf8,Utf16=on,HugeFiles=on,64 bits,8 CPUs LE) LE CPU Freq: 2249 2398 2230 3030 3200 3199 3201 3199 3198 RAM size: 16384 MB, # CPU hardware threads: 8 RAM usage: 1765 MB, # Benchmark threads: 8 Compressing | Decompressing Dict Speed Usage R/U Rating | Speed Usage R/U Rating KiB/s % MIPS MIPS | KiB/s % MIPS MIPS 22: 40736 727 5454 39628 | 346914 794 3726 29590 23: 39706 761 5320 40457 | 341347 793 3724 29539 24: 38128 765 5358 40996 | 334291 790 3716 29340 25: 37176 768 5524 42447 | 328274 789 3702 29215 ---------------------------------- | ------------------------------ Avr: 755 5414 40882 | 792 3717 29421 Tot: 773 4565 35151 The benchmark numbers for compressing/decompressing are almost twice as fast as my 2015 MacBook Pro.</description>
+$ 7z b  7-Zip [64] 17.04 : Copyright (c) 1999-2021 Igor Pavlov : 2017-08-28 p7zip Version 17.04 (locale=utf8,Utf16=on,HugeFiles=on,64 bits,8 CPUs LE)  LE CPU Freq: 2249 2398 2230 3030 3200 3199 3201 3199 3198  RAM size: 16384 MB, # CPU hardware threads: 8 RAM usage: 1765 MB, # Benchmark threads: 8   Compressing | Decompressing Dict Speed Usage R/U Rating | Speed Usage R/U Rating  KiB/s % MIPS MIPS | KiB/s % MIPS MIPS  22: 40736 727 5454 39628 | 346914 794 3726 29590 23: 39706 761 5320 40457 | 341347 793 3724 29539 24: 38128 765 5358 40996 | 334291 790 3716 29340 25: 37176 768 5524 42447 | 328274 789 3702 29215 ---------------------------------- | ------------------------------ Avr: 755 5414 40882 | 792 3717 29421 Tot: 773 4565 35151 The benchmark numbers for compressing/decompressing are almost twice as fast as my 2015 MacBook Pro.</description>
             <content type="html"><![CDATA[<p>I&rsquo;m very impressed with the speed of the 2020 M1 Mac Mini</p>
 <p>I first tested the CPU speed with <code>7z b</code> from <a href="https://github.com/jinfeihan57/p7zip">p7zip</a>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ 7z b
-
-7-Zip <span style="color:#f92672">[</span>64<span style="color:#f92672">]</span> 17.04 : Copyright <span style="color:#f92672">(</span>c<span style="color:#f92672">)</span> 1999-2021 Igor Pavlov : 2017-08-28
-p7zip Version 17.04 <span style="color:#f92672">(</span>locale<span style="color:#f92672">=</span>utf8,Utf16<span style="color:#f92672">=</span>on,HugeFiles<span style="color:#f92672">=</span>on,64 bits,8 CPUs LE<span style="color:#f92672">)</span>
-
-LE
-CPU Freq:  <span style="color:#ae81ff">2249</span>  <span style="color:#ae81ff">2398</span>  <span style="color:#ae81ff">2230</span>  <span style="color:#ae81ff">3030</span>  <span style="color:#ae81ff">3200</span>  <span style="color:#ae81ff">3199</span>  <span style="color:#ae81ff">3201</span>  <span style="color:#ae81ff">3199</span>  <span style="color:#ae81ff">3198</span>
-
-RAM size:   <span style="color:#ae81ff">16384</span> MB,  <span style="color:#75715e"># CPU hardware threads:   8</span>
-RAM usage:   <span style="color:#ae81ff">1765</span> MB,  <span style="color:#75715e"># Benchmark threads:      8</span>
-
-                       Compressing  |                  Decompressing
-Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
-         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
-
-22:      <span style="color:#ae81ff">40736</span>   <span style="color:#ae81ff">727</span>   <span style="color:#ae81ff">5454</span>  <span style="color:#ae81ff">39628</span>  |     <span style="color:#ae81ff">346914</span>   <span style="color:#ae81ff">794</span>   <span style="color:#ae81ff">3726</span>  <span style="color:#ae81ff">29590</span>
-23:      <span style="color:#ae81ff">39706</span>   <span style="color:#ae81ff">761</span>   <span style="color:#ae81ff">5320</span>  <span style="color:#ae81ff">40457</span>  |     <span style="color:#ae81ff">341347</span>   <span style="color:#ae81ff">793</span>   <span style="color:#ae81ff">3724</span>  <span style="color:#ae81ff">29539</span>
-24:      <span style="color:#ae81ff">38128</span>   <span style="color:#ae81ff">765</span>   <span style="color:#ae81ff">5358</span>  <span style="color:#ae81ff">40996</span>  |     <span style="color:#ae81ff">334291</span>   <span style="color:#ae81ff">790</span>   <span style="color:#ae81ff">3716</span>  <span style="color:#ae81ff">29340</span>
-25:      <span style="color:#ae81ff">37176</span>   <span style="color:#ae81ff">768</span>   <span style="color:#ae81ff">5524</span>  <span style="color:#ae81ff">42447</span>  |     <span style="color:#ae81ff">328274</span>   <span style="color:#ae81ff">789</span>   <span style="color:#ae81ff">3702</span>  <span style="color:#ae81ff">29215</span>
-----------------------------------  | ------------------------------
-Avr:             <span style="color:#ae81ff">755</span>   <span style="color:#ae81ff">5414</span>  <span style="color:#ae81ff">40882</span>  |              <span style="color:#ae81ff">792</span>   <span style="color:#ae81ff">3717</span>  <span style="color:#ae81ff">29421</span>
-Tot:             <span style="color:#ae81ff">773</span>   <span style="color:#ae81ff">4565</span>  <span style="color:#ae81ff">35151</span>
-</code></pre></div><p>The benchmark numbers for compressing/decompressing are almost twice as fast as my 2015 MacBook Pro.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ 7z b
-
-7-Zip <span style="color:#f92672">[</span>64<span style="color:#f92672">]</span> 17.04 : Copyright <span style="color:#f92672">(</span>c<span style="color:#f92672">)</span> 1999-2021 Igor Pavlov : 2017-08-28
-p7zip Version 17.04 <span style="color:#f92672">(</span>locale<span style="color:#f92672">=</span>utf8,Utf16<span style="color:#f92672">=</span>on,HugeFiles<span style="color:#f92672">=</span>on,64 bits,8 CPUs x64<span style="color:#f92672">)</span>
-
-x64
-CPU Freq:  <span style="color:#ae81ff">3399</span>  <span style="color:#ae81ff">3440</span>  <span style="color:#ae81ff">3436</span>  <span style="color:#ae81ff">3478</span>  <span style="color:#ae81ff">3507</span>  <span style="color:#ae81ff">3518</span>  <span style="color:#ae81ff">3499</span>  <span style="color:#ae81ff">3477</span>  <span style="color:#ae81ff">3512</span>
-
-RAM size:   <span style="color:#ae81ff">16384</span> MB,  <span style="color:#75715e"># CPU hardware threads:   8</span>
-RAM usage:   <span style="color:#ae81ff">1765</span> MB,  <span style="color:#75715e"># Benchmark threads:      8</span>
-
-                       Compressing  |                  Decompressing
-Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
-         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
-
-22:      <span style="color:#ae81ff">20600</span>   <span style="color:#ae81ff">610</span>   <span style="color:#ae81ff">3284</span>  <span style="color:#ae81ff">20040</span>  |     <span style="color:#ae81ff">227353</span>   <span style="color:#ae81ff">768</span>   <span style="color:#ae81ff">2525</span>  <span style="color:#ae81ff">19392</span>
-23:      <span style="color:#ae81ff">19232</span>   <span style="color:#ae81ff">636</span>   <span style="color:#ae81ff">3080</span>  <span style="color:#ae81ff">19595</span>  |     <span style="color:#ae81ff">212406</span>   <span style="color:#ae81ff">767</span>   <span style="color:#ae81ff">2397</span>  <span style="color:#ae81ff">18381</span>
-24:      <span style="color:#ae81ff">16681</span>   <span style="color:#ae81ff">639</span>   <span style="color:#ae81ff">2806</span>  <span style="color:#ae81ff">17936</span>  |     <span style="color:#ae81ff">193246</span>   <span style="color:#ae81ff">748</span>   <span style="color:#ae81ff">2267</span>  <span style="color:#ae81ff">16961</span>
-25:      <span style="color:#ae81ff">15412</span>   <span style="color:#ae81ff">647</span>   <span style="color:#ae81ff">2721</span>  <span style="color:#ae81ff">17597</span>  |     <span style="color:#ae81ff">193028</span>   <span style="color:#ae81ff">769</span>   <span style="color:#ae81ff">2235</span>  <span style="color:#ae81ff">17179</span>
-----------------------------------  | ------------------------------
-Avr:             <span style="color:#ae81ff">633</span>   <span style="color:#ae81ff">2973</span>  <span style="color:#ae81ff">18792</span>  |              <span style="color:#ae81ff">763</span>   <span style="color:#ae81ff">2356</span>  <span style="color:#ae81ff">17978</span>
-Tot:             <span style="color:#ae81ff">698</span>   <span style="color:#ae81ff">2664</span>  <span style="color:#ae81ff">18385</span>
-</code></pre></div>]]></content>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ 7z b
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>7-Zip <span style="color:#f92672">[</span>64<span style="color:#f92672">]</span> 17.04 : Copyright <span style="color:#f92672">(</span>c<span style="color:#f92672">)</span> 1999-2021 Igor Pavlov : 2017-08-28
+</span></span><span style="display:flex;"><span>p7zip Version 17.04 <span style="color:#f92672">(</span>locale<span style="color:#f92672">=</span>utf8,Utf16<span style="color:#f92672">=</span>on,HugeFiles<span style="color:#f92672">=</span>on,64 bits,8 CPUs LE<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>LE
+</span></span><span style="display:flex;"><span>CPU Freq:  <span style="color:#ae81ff">2249</span>  <span style="color:#ae81ff">2398</span>  <span style="color:#ae81ff">2230</span>  <span style="color:#ae81ff">3030</span>  <span style="color:#ae81ff">3200</span>  <span style="color:#ae81ff">3199</span>  <span style="color:#ae81ff">3201</span>  <span style="color:#ae81ff">3199</span>  <span style="color:#ae81ff">3198</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RAM size:   <span style="color:#ae81ff">16384</span> MB,  <span style="color:#75715e"># CPU hardware threads:   8</span>
+</span></span><span style="display:flex;"><span>RAM usage:   <span style="color:#ae81ff">1765</span> MB,  <span style="color:#75715e"># Benchmark threads:      8</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                       Compressing  |                  Decompressing
+</span></span><span style="display:flex;"><span>Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
+</span></span><span style="display:flex;"><span>         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>22:      <span style="color:#ae81ff">40736</span>   <span style="color:#ae81ff">727</span>   <span style="color:#ae81ff">5454</span>  <span style="color:#ae81ff">39628</span>  |     <span style="color:#ae81ff">346914</span>   <span style="color:#ae81ff">794</span>   <span style="color:#ae81ff">3726</span>  <span style="color:#ae81ff">29590</span>
+</span></span><span style="display:flex;"><span>23:      <span style="color:#ae81ff">39706</span>   <span style="color:#ae81ff">761</span>   <span style="color:#ae81ff">5320</span>  <span style="color:#ae81ff">40457</span>  |     <span style="color:#ae81ff">341347</span>   <span style="color:#ae81ff">793</span>   <span style="color:#ae81ff">3724</span>  <span style="color:#ae81ff">29539</span>
+</span></span><span style="display:flex;"><span>24:      <span style="color:#ae81ff">38128</span>   <span style="color:#ae81ff">765</span>   <span style="color:#ae81ff">5358</span>  <span style="color:#ae81ff">40996</span>  |     <span style="color:#ae81ff">334291</span>   <span style="color:#ae81ff">790</span>   <span style="color:#ae81ff">3716</span>  <span style="color:#ae81ff">29340</span>
+</span></span><span style="display:flex;"><span>25:      <span style="color:#ae81ff">37176</span>   <span style="color:#ae81ff">768</span>   <span style="color:#ae81ff">5524</span>  <span style="color:#ae81ff">42447</span>  |     <span style="color:#ae81ff">328274</span>   <span style="color:#ae81ff">789</span>   <span style="color:#ae81ff">3702</span>  <span style="color:#ae81ff">29215</span>
+</span></span><span style="display:flex;"><span>----------------------------------  | ------------------------------
+</span></span><span style="display:flex;"><span>Avr:             <span style="color:#ae81ff">755</span>   <span style="color:#ae81ff">5414</span>  <span style="color:#ae81ff">40882</span>  |              <span style="color:#ae81ff">792</span>   <span style="color:#ae81ff">3717</span>  <span style="color:#ae81ff">29421</span>
+</span></span><span style="display:flex;"><span>Tot:             <span style="color:#ae81ff">773</span>   <span style="color:#ae81ff">4565</span>  <span style="color:#ae81ff">35151</span>
+</span></span></code></pre></div><p>The benchmark numbers for compressing/decompressing are almost twice as fast as my 2015 MacBook Pro.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ 7z b
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>7-Zip <span style="color:#f92672">[</span>64<span style="color:#f92672">]</span> 17.04 : Copyright <span style="color:#f92672">(</span>c<span style="color:#f92672">)</span> 1999-2021 Igor Pavlov : 2017-08-28
+</span></span><span style="display:flex;"><span>p7zip Version 17.04 <span style="color:#f92672">(</span>locale<span style="color:#f92672">=</span>utf8,Utf16<span style="color:#f92672">=</span>on,HugeFiles<span style="color:#f92672">=</span>on,64 bits,8 CPUs x64<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>x64
+</span></span><span style="display:flex;"><span>CPU Freq:  <span style="color:#ae81ff">3399</span>  <span style="color:#ae81ff">3440</span>  <span style="color:#ae81ff">3436</span>  <span style="color:#ae81ff">3478</span>  <span style="color:#ae81ff">3507</span>  <span style="color:#ae81ff">3518</span>  <span style="color:#ae81ff">3499</span>  <span style="color:#ae81ff">3477</span>  <span style="color:#ae81ff">3512</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RAM size:   <span style="color:#ae81ff">16384</span> MB,  <span style="color:#75715e"># CPU hardware threads:   8</span>
+</span></span><span style="display:flex;"><span>RAM usage:   <span style="color:#ae81ff">1765</span> MB,  <span style="color:#75715e"># Benchmark threads:      8</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                       Compressing  |                  Decompressing
+</span></span><span style="display:flex;"><span>Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
+</span></span><span style="display:flex;"><span>         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>22:      <span style="color:#ae81ff">20600</span>   <span style="color:#ae81ff">610</span>   <span style="color:#ae81ff">3284</span>  <span style="color:#ae81ff">20040</span>  |     <span style="color:#ae81ff">227353</span>   <span style="color:#ae81ff">768</span>   <span style="color:#ae81ff">2525</span>  <span style="color:#ae81ff">19392</span>
+</span></span><span style="display:flex;"><span>23:      <span style="color:#ae81ff">19232</span>   <span style="color:#ae81ff">636</span>   <span style="color:#ae81ff">3080</span>  <span style="color:#ae81ff">19595</span>  |     <span style="color:#ae81ff">212406</span>   <span style="color:#ae81ff">767</span>   <span style="color:#ae81ff">2397</span>  <span style="color:#ae81ff">18381</span>
+</span></span><span style="display:flex;"><span>24:      <span style="color:#ae81ff">16681</span>   <span style="color:#ae81ff">639</span>   <span style="color:#ae81ff">2806</span>  <span style="color:#ae81ff">17936</span>  |     <span style="color:#ae81ff">193246</span>   <span style="color:#ae81ff">748</span>   <span style="color:#ae81ff">2267</span>  <span style="color:#ae81ff">16961</span>
+</span></span><span style="display:flex;"><span>25:      <span style="color:#ae81ff">15412</span>   <span style="color:#ae81ff">647</span>   <span style="color:#ae81ff">2721</span>  <span style="color:#ae81ff">17597</span>  |     <span style="color:#ae81ff">193028</span>   <span style="color:#ae81ff">769</span>   <span style="color:#ae81ff">2235</span>  <span style="color:#ae81ff">17179</span>
+</span></span><span style="display:flex;"><span>----------------------------------  | ------------------------------
+</span></span><span style="display:flex;"><span>Avr:             <span style="color:#ae81ff">633</span>   <span style="color:#ae81ff">2973</span>  <span style="color:#ae81ff">18792</span>  |              <span style="color:#ae81ff">763</span>   <span style="color:#ae81ff">2356</span>  <span style="color:#ae81ff">17978</span>
+</span></span><span style="display:flex;"><span>Tot:             <span style="color:#ae81ff">698</span>   <span style="color:#ae81ff">2664</span>  <span style="color:#ae81ff">18385</span>
+</span></span></code></pre></div>]]></content>
         </item>
         
         <item>

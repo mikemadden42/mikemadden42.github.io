@@ -15,7 +15,7 @@
       
       <guid>https://mikemadden42.github.io/posts/more-macos-system-information/</guid>
       <description>Here are a few more utilities to find system information on macOS.
-$ uptime 11:48 up 3:01, 3 users, load averages: 1.09 0.97 0.93 $ diskutil list /dev/disk0 (internal): #: TYPE NAME SIZE IDENTIFIER 0: GUID_partition_scheme 251.0 GB disk0 1: Apple_APFS_ISC 524.3 MB disk0s1 2: Apple_APFS Container disk3 245.1 GB disk0s2 3: Apple_APFS_Recovery 5.4 GB disk0s3 /dev/disk3 (synthesized): #: TYPE NAME SIZE IDENTIFIER 0: APFS Container Scheme - +245.1 GB disk3 Physical Store disk0s2 1: APFS Volume Macintosh HD 15.</description>
+$ uptime 11:48 up 3:01, 3 users, load averages: 1.09 0.97 0.93 $ diskutil list /dev/disk0 (internal):  #: TYPE NAME SIZE IDENTIFIER  0: GUID_partition_scheme 251.0 GB disk0  1: Apple_APFS_ISC 524.3 MB disk0s1  2: Apple_APFS Container disk3 245.1 GB disk0s2  3: Apple_APFS_Recovery 5.4 GB disk0s3  /dev/disk3 (synthesized):  #: TYPE NAME SIZE IDENTIFIER  0: APFS Container Scheme - +245.</description>
     </item>
     
     <item>
@@ -35,7 +35,7 @@ $ sudo launchctl unload /System/Library/LaunchDaemons/ssh.plist $ sudo launchctl
       
       <guid>https://mikemadden42.github.io/posts/macos-system-information/</guid>
       <description>There are many useful command line utilities to get the system information on a macOS system.
-$ arch arm64 $ hostinfo Mach kernel version: Darwin Kernel Version 20.6.0: Mon Aug 30 06:12:20 PDT 2021; root:xnu-7195.141.6~3/RELEASE_ARM64_T8101 Kernel configured for up to 8 processors. 8 processors are physically available. 8 processors are logically available. Processor type: arm64e (ARM64E) Processors active: 0 1 2 3 4 5 6 7 Primary memory available: 16.00 gigabytes Default processor set: 417 tasks, 1561 threads, 8 processors Load average: 10.</description>
+$ arch arm64  $ hostinfo Mach kernel version:  Darwin Kernel Version 20.6.0: Mon Aug 30 06:12:20 PDT 2021; root:xnu-7195.141.6~3/RELEASE_ARM64_T8101 Kernel configured for up to 8 processors. 8 processors are physically available. 8 processors are logically available. Processor type: arm64e (ARM64E) Processors active: 0 1 2 3 4 5 6 7 Primary memory available: 16.</description>
     </item>
     
   </channel>
